@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+# Text formatting variables
+text_reset=$'\e[0m'
+text_bold=$'\e[1m'
+text_red=$'\e[31m'
+
+function print_usage {
+    cat <<EOF
+Usage: gra [OPTIONS] REMOTE_NAME
+
+Add a Git remote by providing a single name.  Shorthands can be defined in
+~/.config/gra.config.
+
+REMOTE_NAME  Name of the remote
+
+OPTIONS
+  -h, --help  Show this help message and exit
+EOF
+}
+
+function usage_error {
+    echo -e "${text_bold}${text_red}ERROR${text_reset} $1\n"
+    print_usage
+    exit 1
+}
+
+function error {
+    echo -e "${text_bold}${text_red}ERROR${text_reset} $1"
+    exit 1
+}
+
+# Parse arguments
+remote_name=""
+while (( "$#" )); do
+    case "$1" in
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        -*)
+            usage_error "Unsupported option ${text_bold}$1${text_reset}"
+            ;;
+        *)
+            [ "$remote_name" == "" ] && remote_name="$1" && shift || usage_error "Too many arguments"
+            ;;
+    esac
+done
+
+# Check missing argument
+[ "$remote_name" == "" ] && print_usage && exit 0
+
+# TODO: Check if in Git repository
+if ! git status &> /dev/null; then
+    error "Not inside a Git repository"
+fi
+
+# Read config
+[ -f ~/.config/gra.config ] && source ~/.config/gra.config
+
+# Set remote user
+remote_user=""
+if [ -v "$remote_name" ]; then
+    remote_user="${!remote_name}"
+else
+    remote_user="$remote_name"
+fi
+
+# Get origin URL
+origin_url=""
+while read -r remote; do
+    if [[ "$remote" =~ origin[[:space:]](.*)[[:space:]]\(fetch\) ]]; then
+        origin_url="${BASH_REMATCH[1]}"
+        break
+    fi
+done < <(git remote -v)
+[ "$origin_url" == "" ] && error "Failed to get ${text_bold}origin${text_reset} URL"
+
+# Create remote URL
+remote_url=""
+if [[ "$origin_url" =~ ^(.*)([:/])([^/]*)/([^/]*)$ ]]; then
+    remote_url="${BASH_REMATCH[1]}${BASH_REMATCH[2]}${remote_user}/${BASH_REMATCH[4]}"
+else
+    error "Failed to create remote URL for ${text_bold}${remote_user}${text_reset} from ${text_bold}${origin_url}${text_reset}"
+fi
+
+# Add prefix to remote name
+remote_name="origin-${remote_name}"
+
+# Add remote
+echo "Adding remote ${text_bold}${remote_name}${text_reset} with URL ${text_bold}${remote_url}${text_reset}"
+if ! git remote add "$remote_name" "$remote_url"; then
+    error "Failed to add remote ${text_bold}${remote_name}${text_reset}"
+fi
+
+# Fetch
+echo "Fetching from remote ${text_bold}${remote_name}${text_reset}"
+if ! git fetch "$remote_name"; then
+    git remote rm "$remote_name"
+    error "Failed to fetch from ${text_bold}${remote_name}${text_reset}, remote was removed"
+fi
