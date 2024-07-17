@@ -17,6 +17,7 @@
               src = self;
               installPhase = ''
                 install -m 755 -D gra $out/bin/gra
+                install -m 644 -D gra_completion.bash $out/share/bash-completion/completions/gra
               '';
             };
             default = self.packages.${system}.gra;
