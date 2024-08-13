@@ -10,7 +10,7 @@ function print_usage {
 Usage: gra [OPTIONS] REMOTE_NAME
 
 Add a Git remote by providing a single name.  Shorthands can be defined in
-~/.config/gra.config.
+~/.config/gra.config.  If no REMOTE_NAME is provided, all remotes get listed.
 
 REMOTE_NAME  Name of the remote
 
@@ -47,12 +47,16 @@ while (( "$#" )); do
     esac
 done
 
-# Check missing argument
-[ "$remote_name" == "" ] && print_usage && exit 0
-
 # TODO: Check if in Git repository
 if ! git status &> /dev/null; then
     error "Not inside a Git repository"
+fi
+
+# Show remotes if no remote name was passed
+if [ "$remote_name" == "" ]; then
+    echo -e "Argument ${text_bold}REMOTE_NAME${text_reset} not provided, listing remotes\n"
+    git remote -v
+    exit 0
 fi
 
 # Read config
