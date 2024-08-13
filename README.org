@@ -6,6 +6,14 @@
 New remote URLs will be added with the same URL scheme as the one of the =origin= remote.
 The only argument which is needed is a =REMOTE_NAME=,
 
+#+begin_example
+  $ gra Deleh
+  Adding remote origin-Deleh with URL git@github.com:Deleh/example.git
+  Fetching from remote origin-Deleh
+  From github.com:Deleh/example
+   * [new branch]      main       -> origin-Deleh/main
+#+end_example
+
 * Usage
 
 #+begin_example
