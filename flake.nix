@@ -1,5 +1,5 @@
 {
-  description = "Add new Git remotes quickly";
+  description = "Add new Git remotes easily";
   outputs = { self, nixpkgs }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.unix;
