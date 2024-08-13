@@ -1,0 +1,50 @@
+#+title: gra
+#+subtitle: Add new Git remotes quickly
+
+
+/gra/ (short for =git remote add=) is a small Bash script which quickly adds Git remotes.
+New remote URLs will be added with the same URL scheme as the one of the =origin= remote.
+The only argument which is needed is a =REMOTE_NAME=,
+
+* Usage
+
+#+begin_example
+  Usage: gra [OPTIONS] REMOTE_NAME
+
+  Add a Git remote by providing a single name.  If no REMOTE_NAME is provided,
+  all remotes get listed.
+
+  REMOTE_NAME  Name of the remote
+
+  OPTIONS
+    -h, --help  Show this help message and exit
+#+end_example
+
+** Shorthands
+
+Shorthands can be defined in =~/.config/gra.config= for example like this:
+
+#+begin_src sh
+  ex=example
+  slu=SuperLongUsername
+#+end_src
+
+They can be passed as =REMOTE_NAME= argument, which is handy for often-used, long remote names.
+Autocompletion is available for all defined shorthands.
+
+* Installation
+
+** Manual
+
+Place the =gra= script in your =$PATH=.
+To use the autocompletion feature source the =gra_completion.bash= script.
+
+** Script
+
+An installation script for Bash (=install.bash=) is provided which will link the two files to =~/.local/{bin/gra,share/bash-completion/completions/gra}= and add the corresponding entries to =~/.bashrc=.
+Further updates of /gra/ require just =git pull=.
+
+** Nix Flake
+
+This repository is also a [[https://nixos.wiki/wiki/Flakes][Nix Flake]].
+/gra/ is provided as package under =github:Deleh/gra#gra=.
