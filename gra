@@ -9,8 +9,8 @@ function print_usage {
     cat <<EOF
 Usage: gra [OPTIONS] REMOTE_NAME
 
-Add a Git remote by providing a single name.  Shorthands can be defined in
-~/.config/gra.config.  If no REMOTE_NAME is provided, all remotes get listed.
+Add a Git remote by providing a single name.  If no REMOTE_NAME is provided,
+all remotes get listed.
 
 REMOTE_NAME  Name of the remote
 
