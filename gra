@@ -47,7 +47,7 @@ while (( "$#" )); do
     esac
 done
 
-# TODO: Check if in Git repository
+# Check if in Git repository
 if ! git status &> /dev/null; then
     error "Not inside a Git repository"
 fi
