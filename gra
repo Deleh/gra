@@ -9,7 +9,7 @@ function print_usage {
     cat <<EOF
 Usage: gra [OPTIONS] REMOTE_NAME
 
-Add a Git remote by providing a single name.  All remotes get listed If no
+Add a Git remote by providing a single name.  All remotes get listed if no
 REMOTE_NAME is provided.
 
 REMOTE_NAME  Name of the remote
