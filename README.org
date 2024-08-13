@@ -2,7 +2,7 @@
 #+subtitle: Add new Git remotes quickly
 
 
-/gra/ (short for =git remote add=) is a small Bash script which quickly adds Git remotes.
+/gra/ (short for =git remote add=) is a small Bash script which allows to add new Git remotes easily.
 New remote URLs will be added with the same URL scheme as the one of the =origin= remote.
 The only argument which is needed is a =REMOTE_NAME=,
 
