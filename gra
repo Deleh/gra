@@ -3,6 +3,7 @@
 # Text formatting variables
 text_reset=$'\e[0m'
 text_bold=$'\e[1m'
+text_yellow=$'\e[33m'
 text_red=$'\e[31m'
 
 function print_usage {
@@ -17,6 +18,10 @@ REMOTE_NAME  Name of the remote
 OPTIONS
   -h, --help  Show this help message and exit
 EOF
+}
+
+function warning {
+    echo -e "${text_bold}${text_yellow}WARNING${text_reset} $1"
 }
 
 function usage_error {
@@ -94,7 +99,7 @@ remote_name="origin-${remote_name}"
 # Add remote
 echo "Adding remote ${text_bold}${remote_name}${text_reset} with URL ${text_bold}${remote_url}${text_reset}"
 if ! git remote add "$remote_name" "$remote_url"; then
-    error "Failed to add remote ${text_bold}${remote_name}${text_reset}"
+    warning "Failed to add remote ${text_bold}${remote_name}${text_reset}, trying to fetch..."
 fi
 
 # Fetch
