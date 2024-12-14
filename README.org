@@ -39,6 +39,7 @@ Shorthands can be defined in =~/.config/gra.config= for example like this:
 
 They can be passed as =REMOTE_NAME= argument, which is handy for often-used, long remote names.
 Autocompletion is available for all defined shorthands.
+Make sure the shorthands adhere to the Bash variable naming rules.
 
 * Installation
 
